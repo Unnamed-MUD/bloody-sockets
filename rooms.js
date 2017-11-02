@@ -24,7 +24,14 @@ Rooms.prototype.setup = function (callback) {
 Rooms.prototype.getDefaultRoomID = function (){
   return this.rooms[0].id;
 }
-
+Rooms.prototype.findExitID = function(room,exitName) {
+	for(var i = 0; i < room.exits.length; i++) {
+		if(room.exits[i].cmd == exitName){
+			return room.exits[i].room;
+		}
+	}
+	return false;
+}
 Rooms.prototype.findRoom = function (roomID) {
   for(var i = 0; i < this.rooms.length; i++) {
     if(this.rooms[i].id == roomID) {
@@ -32,6 +39,9 @@ Rooms.prototype.findRoom = function (roomID) {
     }
   }
   return false;
+}
+Rooms.prototype.all = function() {
+	return this.rooms;
 }
 
 Rooms.prototype.load = function (callback) {
