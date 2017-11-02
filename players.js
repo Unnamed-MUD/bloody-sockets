@@ -14,13 +14,13 @@ Players.prototype.add = function (player) {
   }
 
   list.push(player);
-  console.log('Added a player ' + player.name );
+  console.log('+ player ' + player.name );
 }
 
 Players.prototype.remove = function (player){
   for(var i = 0; i <  list.length; i++) {
     if(list[i].socket.id == player.socket.id) {
-      console.log('Removed a player ' + player.name);
+      console.log('- player ' + player.name);
       list.splice(i, 1);
       return;
     }

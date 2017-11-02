@@ -7,21 +7,10 @@ Commands.prototype.resolve = function (player, fullCommand) {
     if(fullCommand.length == 0) {
         return Message.send(player, "You didnt type anything...");
     }
-    
+
     // if we find the command just by name
-    var command = {
-        full: "", // full text
-        tokens: [], // every, word, space, seperated, array
-        body: ""  // everything after the first word as a string
-    };
-    
-    command.full = fullCommand.toLowerCase().trim();
-    command.tokens = command.full.split(" ");
-    
-    var bodyPieces = fullCommand.trim().split(/ (.+)/);
-    if(bodyPieces.length > 1) {
-        command.body = bodyPieces[1];
-    }
+    var command = this.parse(fullCommand);
+
     var currentRoom = Rooms.findRoom(player.roomID);
     var nextRoomID = Rooms.findExitID(currentRoom,command.tokens[0]);
     if(nextRoomID) {
@@ -30,14 +19,32 @@ Commands.prototype.resolve = function (player, fullCommand) {
         Message.send(others, player.name + " has arrived");
         return;
     }
-    
+
     if(this.all[command.tokens[0]]) {
         this.all[command.tokens[0]](player, command);
     } else {
         Message.send(player, "There's no command called '" + command.tokens[0] +"'");
     }
-    
+
 };
+
+// split the command out into useful versions
+Commands.prototype.parse = function (fullCommand) {
+  var command = {
+      full: "", // full text
+      tokens: [], // every, word, space, seperated, array
+      body: ""  // everything after the first word as a string
+  };
+
+  command.full = fullCommand.toLowerCase().trim();
+  command.tokens = command.full.split(" ");
+
+  var bodyPieces = fullCommand.trim().split(/ (.+)/);
+  if(bodyPieces.length > 1) {
+      command.body = bodyPieces[1];
+  }
+  return command;
+}
 
 // full list of all commands
 Commands.prototype.all = {};
@@ -81,12 +88,12 @@ Commands.prototype.all.dev = function(player,command) {
             player.roomID = command.tokens[2];
             var others = Players.findOthersInRoom(player.roomID, player);
             return Message.send(others,player.name + " appeared in a cloud of smoke! *poof*")
-            
-            
+
+
         }else {
             return Message.send(player,"Room does not exist");
         }
-        
+
     }
 }
 

@@ -24,9 +24,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 Rooms.setup(function () { });
 
 io.on('connection', function (socket) {
-  socket.emit('message', {
-    message: "You've connected"
-  });
 
   // player character with all stats + socket
   var player = {
@@ -39,6 +36,10 @@ io.on('connection', function (socket) {
   };
 
   Players.add(player);
+
+  socket.emit('message', {
+    message: "Logged in as " + player.name
+  });
 
   socket.on('disconnect', function(reason) {
     Players.remove(player);
