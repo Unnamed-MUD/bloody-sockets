@@ -33,7 +33,6 @@ Commands.prototype.all.look = function (player, tokens, callback) {
   } else {
     callback("Can't see any room... where are you?");
   }
-
 }
 
 // example of a two token command, 'sleep x'
@@ -43,6 +42,10 @@ Commands.prototype.all.sleep = function (player, tokens, callback) {
   } else {
     callback("You sleep for " + tokens[1] + " microseconds");
   }
+}
+
+Commands.prototype.all.help = function (player, tokens, callback) {
+  callback("Commands: " + Object.keys(Commands.prototype.all).join(", "));
 }
 
 module.exports = new Commands ();

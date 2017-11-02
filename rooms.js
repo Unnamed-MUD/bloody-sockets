@@ -2,13 +2,13 @@ var MongoClient = require('mongodb').MongoClient;
 
 function loadFromDB(callback) {
 	MongoClient.connect("mongodb://localhost:27017/test", function(err, db) {
-    console.log('connected');
 		if(err) { return console.dir(err); }
-
+		console.log("Connected to mongo");
 		var collection = db.collection('rooms');
 
 		collection.find().toArray(function(err, rooms) {
       callback(rooms);
+			console.log("Found " + rooms.length + " rooms");
 		});
 	});
 };

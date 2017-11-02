@@ -3,7 +3,11 @@
   "dependencies": {
     "express": "^4.15.4",
     "mongodb": "^2.2.31",
+    "nodemon": "^1.12.1",
     "socket.io": "^2.0.0"
+  },
+  "scripts": {
+    "start": "nodemon server.js"
   },
   "version": "0.0.1",
   "engines": {

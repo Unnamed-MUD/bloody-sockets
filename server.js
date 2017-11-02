@@ -8,6 +8,7 @@ var io = require('socket.io')(server);
 var port = process.env.PORT || 3002;
 var Commands = require('./commands.js');
 
+console.log("");
 server.listen(port, function () {
   console.log('Server listening at port %d', port);
 });
@@ -19,9 +20,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 var numUsers = 0;
 
-Rooms.setup(function () {
-  //done
-});
+// just load up the rooms from the DB
+Rooms.setup(function () { });
 
 io.on('connection', function (socket) {
   socket.emit('message', {
@@ -30,6 +30,8 @@ io.on('connection', function (socket) {
 
   socket.player = {
     name: "rosa",
+    class: "hugomancer",
+    level:99,
     roomID : Rooms.getDefaultRoomID()
   };
 
