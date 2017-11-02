@@ -1,0 +1,46 @@
+<html>
+  <head>
+  </head>
+
+  <body>
+    <style>
+    body {
+      background: #000;
+      text: #fff;
+    }
+    textarea {
+      background: #111;
+      padding:10px;
+      text: #fff;
+      color: #fff;
+      font-size: 18px;
+      width:800px;
+      height:500px;
+      border:0px;
+    }
+    input[name=chat] {
+      width: 800px;
+      font-size: 18px;
+      background-color: #222;
+      color:#fff;
+      border:0px;
+      padding:10px;
+    }
+    #wrapper {
+      width:900px;
+      margin: 0 auto;
+    }
+
+    </style>
+    <div id="wrapper">
+      <textarea></textarea>
+      <form>
+        <input name="chat" autocomplete="off" autofocus>
+      </form>
+    </div>
+
+    <script src="jquery.js"></script>
+    <script src="socket.io.js"></script>
+    <script src="main.js"></script>
+  </body>
+</html>

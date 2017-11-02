@@ -1,0 +1,12 @@
+{
+  "name": "bloodysockets",
+  "dependencies": {
+    "express": "^4.15.4",
+    "mongodb": "^2.2.31",
+    "socket.io": "^2.0.0"
+  },
+  "version": "0.0.1",
+  "engines": {
+    "node": ">= 6.9.0"
+  }
+}
