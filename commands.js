@@ -47,6 +47,8 @@ Commands.prototype.all.look = function (player, command) {
         exitList += exit.cmd+ " ";
       });
       Message.send(player, "Exits: " + exitList);
+    } else {
+      Message.send(player, "Exits: none");
     }
   } else {
     Message.send(player, "Can't find any room... where are you???");
@@ -58,6 +60,8 @@ Commands.prototype.all.sleep = function (player, command) {
   if(command.tokens.length < 2) {
     Message.send(player, "sleep for how long?");
   } else {
+    var others = Players.findOthersInRoom(player.roomID, player);
+    Message.send(others, player.name + " goes to sleep");
     Message.send(player, "You sleep for " + command.tokens[1] + " microseconds");
   }
 }
