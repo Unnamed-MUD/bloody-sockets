@@ -1,9 +1,10 @@
 var glob = require( 'glob' );
 var path = require( 'path' );
 
+var Items = function () {};
+
 var items = [];
 
-var Items = function () {};
 
 // auto startup on include
 glob.sync( './items/*.js' ).forEach( function( file ) {
@@ -16,7 +17,7 @@ glob.sync( './items/*.js' ).forEach( function( file ) {
 Items.prototype.replace = function (list) {
   var output = [];
   for(var i =0 ; i <list.length; i++) {
-    var item = this.find(list[i]);
+    var item = this._find(list[i]);
     if(item) {
       output.push(item);
     } else {
@@ -26,8 +27,17 @@ Items.prototype.replace = function (list) {
   return output;
 }
 
+Items.prototype.removeFromRoom = function (room, slug) {
+	for(var i = 0; i< room.items.length; i++){
+		if(room.items[i].slug == slug) {
+      return room.items.splice(i, 1)[0];
+		}
+	}
+  return false;
+}
+
 // find by slug name, e.g. "south-fountain"
-Items.prototype.find = function (slug) {
+Items.prototype._find = function (slug) {
   for(var i =0 ; i <items.length; i++) {
     if(items[i].slug == slug) {
       return items[i];

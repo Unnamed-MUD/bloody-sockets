@@ -2,6 +2,7 @@ var fs = require('fs');
 
 var playerTemplate = require('../templates/player.json');
 var Rooms = require('./rooms');
+var Items = require('./items');
 var Message = require("./message");
 
 var Players = function () {
@@ -101,11 +102,25 @@ Players.prototype._not = function (players, exlcudedPlayer) {
 Players.prototype.load = function (playerName) {
   var filename = playerName+".json";
   var fullPath = __dirname+"/../saves/"+filename;
-  if(fs.existsSync(fullPath)) {
-    var data = fs.readFileSync(fullPath, {encoding:"utf8"});
-    return JSON.parse(data);
-  } else {
+  if(!fs.existsSync(fullPath)) {
+    // didnt find file
     return false;
+  }
+  var data = fs.readFileSync(fullPath, {encoding:"utf8"});
+  var obj = JSON.parse(data);
+
+  // inflate inventory slug array into rel objects
+  obj.inventory = Items.replace(obj.inventory);
+  
+  return obj;
+}
+
+Players.prototype.getItemFromRoom = function (player, room, slug) {
+  var item = Items.removeFromRoom(room, slug);
+  if(item) {
+    player.inventory.push(item);
+  } else {
+    Message.send(player, "No such item in room");
   }
 }
 
@@ -122,6 +137,9 @@ Players.prototype.save = function (player) {
       output[keys[i]] = player[keys[i]];
     }
   }
+
+  // make inventory into flat slugs
+  output.inventory = output.inventory.map(a => a.slug);
 
   var outputString = JSON.stringify(output, null, '  '); // format json with indents
 

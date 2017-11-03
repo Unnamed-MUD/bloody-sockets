@@ -2,6 +2,7 @@ var Commands = function (){};
 var Rooms = require('./rooms');
 var Players = require('./players');
 var Message = require('./message');
+var Items = require('./items');
 
 Commands.prototype.resolve = function (player, fullCommand) {
     if(fullCommand.length == 0) {
@@ -146,8 +147,18 @@ Commands.prototype.all.say = function (player, command) {
     Message.send(player, "You say '" + command.body + "'");
 }
 
+Commands.prototype.all.inv = function (player, command){
+  Message.send(player, player.inventory.length + " items: " + player.inventory.map(e => e.name).join(", "));
+}
+
 Commands.prototype.all.help = function (player, command) {
     Message.send(player, "Commands: " + Object.keys(Commands.prototype.all).join(", "));
+}
+
+Commands.prototype.all.get = function (player, command) {
+  var room = Rooms.findRoomByID(player.roomID);
+  var slug = command.tokens[1];
+  Players.getItemFromRoom(player, room, slug);
 }
 
 module.exports = new Commands ();
