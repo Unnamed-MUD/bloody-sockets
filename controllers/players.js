@@ -111,7 +111,7 @@ Players.prototype.load = function (playerName) {
 
   // inflate inventory slug array into rel objects
   obj.inventory = Items.replace(obj.inventory);
-  
+
   return obj;
 }
 
@@ -119,8 +119,19 @@ Players.prototype.getItemFromRoom = function (player, room, slug) {
   var item = Items.removeFromRoom(room, slug);
   if(item) {
     player.inventory.push(item);
+    Message.send(player, "You pick up the " + item.name);
   } else {
     Message.send(player, "No such item in room");
+  }
+}
+
+Players.prototype.dropItem = function (player, room, slug) {
+  var item = Items.removeFromPlayer(player, slug);
+  if(item) {
+    room.items.push(item);
+    Message.send(player, "You drop the " + item.name);
+  } else {
+    Message.send(player, "No such item in player inventory");
   }
 }
 

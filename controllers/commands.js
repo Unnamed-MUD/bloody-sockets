@@ -62,12 +62,12 @@ Commands.prototype.all.look = function (player, command) {
 
     var exitList = "none";
     if(room.exits.length > 0){
-        exitList = room.exits.map(e => e.cmd).join(" ");
+        exitList = room.exits.map(e => e.cmd).join(", ");
     }
     Message.send(player, "Exits: " + exitList);
 
     if(room.items.length > 0){
-        var itemList = room.items.map(e => e.name).join(" ");
+        var itemList = room.items.map(e => e.name).join(", ");
         Message.send(player, "Items: " + itemList);
     }
 
@@ -159,6 +159,12 @@ Commands.prototype.all.get = function (player, command) {
   var room = Rooms.findRoomByID(player.roomID);
   var slug = command.tokens[1];
   Players.getItemFromRoom(player, room, slug);
+}
+
+Commands.prototype.all.drop = function (player, command) {
+  var room = Rooms.findRoomByID(player.roomID);
+  var slug = command.tokens[1];
+  Players.dropItem(player, room, slug);
 }
 
 module.exports = new Commands ();

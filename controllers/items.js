@@ -29,10 +29,30 @@ Items.prototype.replace = function (list) {
 
 Items.prototype.removeFromRoom = function (room, slug) {
 	for(var i = 0; i< room.items.length; i++){
-		if(room.items[i].slug == slug) {
+		if(this._match(room.items[i], slug)) {
       return room.items.splice(i, 1)[0];
 		}
 	}
+  return false;
+}
+
+
+Items.prototype.removeFromPlayer = function (player, slug) {
+	for(var i = 0; i< player.inventory.length; i++){
+		if(this._match(player.inventory[i], slug)) {
+      return player.inventory.splice(i, 1)[0];
+		}
+	}
+  return false;
+}
+
+// this is how we determine if a string matched an item
+// for now, it's an exact match on slug field, later it should be soft
+// and use multiple fields
+Items.prototype._match = function (item, text) {
+  if(item.slug == text) {
+    return true;
+  }
   return false;
 }
 
