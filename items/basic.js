@@ -3,7 +3,7 @@
 var example = {
   slug: "sword",
   name: "simple sword",
-  type: "weapon", // weapon | furniture | food ...
+  type: "weapon", // weapon | furniture | food ... we need to define these
 };
 
 

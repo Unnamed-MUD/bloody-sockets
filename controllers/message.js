@@ -2,10 +2,8 @@ var Message = function () {};
 
 Message.prototype.send = function (targets, text){
   // target can be single player or array
-  if(typeof targets.length == "number"){
-    // array
-  } else {
-    // pack it into an array
+  // if there's no length field, then pack our single target into an array
+  if(typeof targets.length != "number"){
     targets = [targets];
   }
 

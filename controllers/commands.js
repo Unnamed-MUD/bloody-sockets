@@ -152,7 +152,14 @@ Commands.prototype.all.inv = function (player, command){
 }
 
 Commands.prototype.all.help = function (player, command) {
-    Message.send(player, "Commands: " + Object.keys(Commands.prototype.all).join(", "));
+  var public = [];
+  // hide any commands starting with _
+  Object.keys(Commands.prototype.all).forEach(function(k){
+    if(k[0] != '_'){
+      public.push(k);
+    }
+  });
+  Message.send(player, "Commands: " + public.join(", "));
 }
 
 Commands.prototype.all.get = function (player, command) {

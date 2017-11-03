@@ -28,6 +28,11 @@ Rooms.prototype.getDefaultRoomID = function (){
   return this.rooms[0].id;
 }
 
+// fake for now
+Rooms.prototype.getRecallRoomID = function (){
+	return this.rooms[0].id;
+}
+
 // for a given cmd, eg "east", see if a room has that exit
 // if so, we pass back the linked room's ID, or false
 Rooms.prototype.findExitID = function(room,exitName) {
