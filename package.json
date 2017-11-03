@@ -2,6 +2,7 @@
   "name": "bloodysockets",
   "dependencies": {
     "express": "^4.15.4",
+    "glob": "^7.1.2",
     "mongodb": "^2.2.31",
     "nodemon": "^1.12.1",
     "socket.io": "^2.0.0"

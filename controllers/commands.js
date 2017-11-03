@@ -52,21 +52,24 @@ Commands.prototype.all = {};
 // single token command, 'look'
 Commands.prototype.all.look = function (player, command) {
     var room = Rooms.findRoomByID(player.roomID);
-    if(room) {
-      Message.send(player, room.title);
-      Message.send(player, room.content);
-      if(room.exits.length > 0){
-          var exitList = "";
-          room.exits.forEach(function(exit) {
-              exitList += exit.cmd+ " ";
-          });
-          Message.send(player, "Exits: " + exitList);
-      } else {
-          Message.send(player, "Exits: none");
-      }
-    } else {
-        Message.send(player, "Can't find any room... where are you???");
+    if(!room) {
+      return Message.send(player, "Can't find any room... where are you???");
     }
+
+    Message.send(player, room.title);
+    Message.send(player, room.content);
+
+    var exitList = "none";
+    if(room.exits.length > 0){
+        exitList = room.exits.map(e => e.cmd).join(" ");
+    }
+    Message.send(player, "Exits: " + exitList);
+
+    if(room.items.length > 0){
+        var itemList = room.items.map(e => e.name).join(" ");
+        Message.send(player, "Items: " + itemList);
+    }
+
 }
 Commands.prototype.all.dev = function(player,command) {
     if (command.tokens.length < 2) {

@@ -30,6 +30,7 @@ Players.prototype.createAndSpawn = function (socket, name) {
 
   this.save(player);
   this._add(player);
+  Message.send(player, "Created player " + player.name);
   return player;
 }
 

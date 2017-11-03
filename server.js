@@ -37,7 +37,10 @@ io.on('connection', function (socket) {
   });
 
   socket.on('message', function (message) {
+    // use the step field we attached to the socket to see where they are
+    //   along the login process
     if(socket.step == "name") {
+      // either create a new character or load from file
       var command = Commands.parse(message);
       var loadedPlayer = Players.load(command.tokens[0]);
       if(loadedPlayer == false) {
@@ -46,12 +49,9 @@ io.on('connection', function (socket) {
         player = Players.spawn(socket, loadedPlayer);
       }
       socket.step ="playing";
+
     } else if(socket.step == "playing") {
-      Commands.resolve(player, message, function(text){
-        socket.emit('message', {
-          message: text
-        });
-      });
+      Commands.resolve(player, message);
     }
   });
 });

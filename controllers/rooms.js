@@ -1,4 +1,5 @@
 var MongoClient = require('mongodb').MongoClient;
+var Items = require('./items');
 
 function loadFromDB(callback) {
 	MongoClient.connect("mongodb://localhost:27017/test", function(err, db) {
@@ -59,6 +60,7 @@ Rooms.prototype._load = function (callback) {
   loadFromDB (function (rooms) {
     rooms.forEach(function(room) {
       room.id = room._id.toString();
+			room.items = Items.replace(room.items);
     });
     self.rooms = rooms;
 
