@@ -8,24 +8,24 @@ Commands.prototype.resolve = function (player, fullCommand) {
         return Message.send(player, "You didnt type anything...");
     }
 
-    // if we find the command just by name
     var command = this.parse(fullCommand);
 
-    var currentRoom = Rooms.findRoom(player.roomID);
+    // if we find the command just by first token in Commands.all
+    if(this.all[command.tokens[0]]) {
+        return this.all[command.tokens[0]](player, command);
+    } else {
+
+    }
+
+    // check if first token matches a room exit word
+    var currentRoom = Rooms.findRoomByID(player.roomID);
     var nextRoomID = Rooms.findExitID(currentRoom,command.tokens[0]);
     if(nextRoomID) {
-        player.roomID = nextRoomID;
-        var others = Players.findOthersInRoom(player.roomID, player);
-        Message.send(others, player.name + " has arrived");
-        return;
+        return this.all._move(player, nextRoomID);
     }
 
-    if(this.all[command.tokens[0]]) {
-        this.all[command.tokens[0]](player, command);
-    } else {
-        Message.send(player, "There's no command called '" + command.tokens[0] +"'");
-    }
-
+    // fail case, no matching command or room exit
+    Message.send(player, "There's no command called '" + command.tokens[0] +"'");
 };
 
 // split the command out into useful versions
@@ -51,18 +51,19 @@ Commands.prototype.all = {};
 
 // single token command, 'look'
 Commands.prototype.all.look = function (player, command) {
-    var room = Rooms.findRoom(player.roomID);
+    var room = Rooms.findRoomByID(player.roomID);
     if(room) {
-        Message.send(player, room.content);
-        if(room.exits.length > 0){
-            var exitList = "";
-            room.exits.forEach(function(exit) {
-                exitList += exit.cmd+ " ";
-            });
-            Message.send(player, "Exits: " + exitList);
-        } else {
-            Message.send(player, "Exits: none");
-        }
+      Message.send(player, room.title);
+      Message.send(player, room.content);
+      if(room.exits.length > 0){
+          var exitList = "";
+          room.exits.forEach(function(exit) {
+              exitList += exit.cmd+ " ";
+          });
+          Message.send(player, "Exits: " + exitList);
+      } else {
+          Message.send(player, "Exits: none");
+      }
     } else {
         Message.send(player, "Can't find any room... where are you???");
     }
@@ -83,7 +84,7 @@ Commands.prototype.all.dev = function(player,command) {
         if (command.tokens.length < 3) {
             return Message.send(player,"teleport requires 3 arguements");
         }
-        if (Rooms.findRoom(command.tokens[2])) {
+        if (Rooms.findRoomByID(command.tokens[2])) {
             //Success!
             player.roomID = command.tokens[2];
             var others = Players.findOthersInRoom(player.roomID, player);
@@ -97,6 +98,20 @@ Commands.prototype.all.dev = function(player,command) {
     }
 }
 
+// this must be externally validated !
+//
+Commands.prototype.all._move = function (player, newRoomID) {
+  var othersLeaving = Players.findOthersInRoom(player.roomID, player);
+  Message.send(othersLeaving, player.name + " has left");
+  player.roomID = newRoomID;
+  var othersEntering = Players.findOthersInRoom(player.roomID, player);
+  Message.send(othersEntering, player.name + " has entered the room");
+}
+
+Commands.prototype.all.save = function (player) {
+  Players.save(player); // save happens async
+  Message.send(player, "Your adventure has been recorded");
+}
 
 // example of a two token command, 'sleep x'
 Commands.prototype.all.sleep = function (player, command) {

@@ -17,13 +17,18 @@ var Rooms = function () {
   this.rooms = [];
 };
 
+// boot up call
 Rooms.prototype.setup = function (callback) {
-  this.load(callback);
+  this._load(callback);
 }
 
+// if we need to recall or spawn somewhere safe
 Rooms.prototype.getDefaultRoomID = function (){
   return this.rooms[0].id;
 }
+
+// for a given cmd, eg "east", see if a room has that exit
+// if so, we pass back the linked room's ID, or false
 Rooms.prototype.findExitID = function(room,exitName) {
 	for(var i = 0; i < room.exits.length; i++) {
 		if(room.exits[i].cmd == exitName){
@@ -32,7 +37,9 @@ Rooms.prototype.findExitID = function(room,exitName) {
 	}
 	return false;
 }
-Rooms.prototype.findRoom = function (roomID) {
+
+// get room object
+Rooms.prototype.findRoomByID = function (roomID) {
   for(var i = 0; i < this.rooms.length; i++) {
     if(this.rooms[i].id == roomID) {
       return this.rooms[i];
@@ -40,11 +47,14 @@ Rooms.prototype.findRoom = function (roomID) {
   }
   return false;
 }
+
+// list all rooms
 Rooms.prototype.all = function() {
 	return this.rooms;
 }
 
-Rooms.prototype.load = function (callback) {
+// actual parsing from database
+Rooms.prototype._load = function (callback) {
   var self = this;
   loadFromDB (function (rooms) {
     rooms.forEach(function(room) {

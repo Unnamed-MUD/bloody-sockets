@@ -7,9 +7,9 @@ var server = require('http').createServer(app);
 var io = require('socket.io')(server);
 var port = process.env.PORT || 3002;
 
-var Rooms = require('./rooms.js');
-var Players = require('./players.js');
-var Commands = require('./commands.js');
+var Rooms = require('./controllers/rooms.js');
+var Players = require('./controllers/players.js');
+var Commands = require('./controllers/commands.js');
 
 // boot server
 console.log("");
@@ -24,21 +24,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 Rooms.setup(function () { });
 
 io.on('connection', function (socket) {
-
-  // player character with all stats + socket
-  var player = {
-    socket: socket,
-    // random string name
-    name: randomName(),
-    class: "hugomancer",
-    level:99,
-    roomID : Rooms.getDefaultRoomID()
-  };
-
-  Players.add(player);
+  //steps of loggin in: name | playing
+  socket.step = "name";
+  var player;
 
   socket.emit('message', {
-    message: "Logged in as " + player.name
+    message: "Type your name :"
   });
 
   socket.on('disconnect', function(reason) {
@@ -46,11 +37,22 @@ io.on('connection', function (socket) {
   });
 
   socket.on('message', function (message) {
-    Commands.resolve(player, message, function(text){
+    if(socket.step == "name") {
+      var command = Commands.parse(message);
+      var loadedPlayer = Players.load(command.tokens[0]);
+      if(loadedPlayer == false) {
+        player = Players.createAndSpawn(socket, command.tokens[0]);
+      } else {
+        player = Players.spawn(socket, loadedPlayer);
+      }
+      socket.step ="playing";
+    } else if(socket.step == "playing") {
+      Commands.resolve(player, message, function(text){
         socket.emit('message', {
           message: text
         });
       });
+    }
   });
 });
 
