@@ -13,7 +13,7 @@ $(function( ){
     print('<br><div class="echo">> ' + input + '</div>'); // local echo
     socket.emit('message', input); // send it to our server
     $('[name=chat]').val(''); // clear input field
-
+    print('<br>');
     e.preventDefault();// make sure we dont accidentally submit
     return false;
   });

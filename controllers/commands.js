@@ -54,7 +54,6 @@ Commands.prototype.all.look = function (player, command) {
     if(!room) {
       return Message.send(player, "Can't find any room... where are you???");
     }
-
     Message.send(player, "{"+room.title+"}");
     Message.send(player, room.content);
 
@@ -108,6 +107,7 @@ Commands.prototype.all._move = function (player, newRoomID) {
   player.roomID = newRoomID;
   var othersEntering = Players.findOthersInRoom(player.roomID, player);
   Message.send(othersEntering, player.name + " has entered the room");
+  this.look(player);
 }
 
 Commands.prototype.all.save = function (player) {
