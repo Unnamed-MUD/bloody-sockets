@@ -18,11 +18,6 @@ var Rooms = function () {
   this.rooms = [];
 };
 
-// boot up call
-Rooms.prototype.setup = function (callback) {
-  this._load(callback);
-}
-
 // if we need to recall or spawn somewhere safe
 Rooms.prototype.getDefaultRoomID = function (){
   return this.rooms[0].id;
@@ -69,7 +64,7 @@ Rooms.prototype.all = function() {
 }
 
 // actual parsing from database
-Rooms.prototype._load = function (callback) {
+Rooms.prototype._load = function () {
   var self = this;
   loadFromDB (function (rooms) {
     rooms.forEach(function(room) {
@@ -77,8 +72,6 @@ Rooms.prototype._load = function (callback) {
 			room.items = Items.replace(room.items);
     });
     self.rooms = rooms;
-
-    callback();
   });
 }
 

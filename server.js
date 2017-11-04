@@ -20,8 +20,7 @@ server.listen(port, function () {
 // route static site
 app.use(express.static(path.join(__dirname, 'public')));
 
-// setup the rooms controller
-Rooms.setup(function () { });
+Rooms._load();
 
 io.on('connection', function (socket) {
   //steps of loggin in: name | playing
