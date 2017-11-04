@@ -1,3 +1,5 @@
+var clone = require('safe-clone-deep');
+
 var glob = require( 'glob' );
 var path = require( 'path' );
 
@@ -19,7 +21,7 @@ Items.prototype.replace = function (list) {
   for(var i =0 ; i <list.length; i++) {
     var item = this._find(list[i]);
     if(item) {
-      output.push(item);
+      output.push(clone(item)); // clone items
     } else {
       console.log ("couldnt find item " + list[i].slug);
     }

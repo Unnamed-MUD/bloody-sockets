@@ -119,7 +119,9 @@ Players.prototype.getItemFromRoom = function (player, room, slug) {
   var item = Items.removeFromRoom(room, slug);
   if(item) {
     player.inventory.push(item);
-    Message.send(player, "You pick up the " + item.name);
+    var others = this.findOthersInRoom(player.roomID, player);
+    Message.send(player, "You pick up [" + item.name + "]");
+    Message.send(others, player.name +" picks up [" + item.name + "]");
   } else {
     Message.send(player, "No such item in room");
   }
@@ -129,7 +131,9 @@ Players.prototype.dropItem = function (player, room, slug) {
   var item = Items.removeFromPlayer(player, slug);
   if(item) {
     room.items.push(item);
-    Message.send(player, "You drop the " + item.name);
+      var others = this.findOthersInRoom(player.roomID, player);
+    Message.send(player, "You drop [" + item.name + "]");
+    Message.send(others, player.name + " drops [" + item.name + "]");
   } else {
     Message.send(player, "No such item in player inventory");
   }

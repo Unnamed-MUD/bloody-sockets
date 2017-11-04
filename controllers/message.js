@@ -14,4 +14,5 @@ Message.prototype.send = function (targets, text){
   }
 }
 
+
 module.exports = new Message();

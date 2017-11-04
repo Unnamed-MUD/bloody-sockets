@@ -10,7 +10,7 @@ $(function( ){
 
   $('form').on('submit', function (e) {
     var input = $('[name=chat]').val(); // get value from box
-    print("\n> " + input); // local echo
+    print('<br><div class="echo">> ' + input + '</div>'); // local echo
     socket.emit('message', input); // send it to our server
     $('[name=chat]').val(''); // clear input field
 
@@ -19,8 +19,16 @@ $(function( ){
   });
 
   function print(myString) {
-    var $textarea = $('textarea');
-    $textarea.append(myString + "\n");
+    var $textarea = $('#log');
+
+    // handle hilight parsing
+    myString = myString.replace("[", '<span class="hilight-item">');
+    myString = myString.replace("]", '</span>');
+
+    myString = myString.replace("{", '<span class="hilight-title">');
+    myString = myString.replace("}", '</span>');
+
+    $textarea.append("<div>"+myString + "</div>");
     $textarea.scrollTop($textarea[0].scrollHeight - $textarea.height());
   }
 });

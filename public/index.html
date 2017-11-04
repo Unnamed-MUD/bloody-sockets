@@ -7,8 +7,9 @@
     body {
       background: #000;
       text: #fff;
+      font-family: sans-serif;
     }
-    textarea {
+    #log {
       background: #111;
       padding:10px;
       text: #fff;
@@ -16,6 +17,7 @@
       font-size: 18px;
       width:800px;
       height:500px;
+      overflow-y: scroll;
       border:0px;
     }
     input[name=chat] {
@@ -30,10 +32,19 @@
       width:900px;
       margin: 0 auto;
     }
+    .hilight-item {
+      color:#ddf;
+    }
+    .hilight-title {
+      color:#ffd;
+    }
+    .echo {
+      color:#ccc;
+    }
 
     </style>
     <div id="wrapper">
-      <textarea></textarea>
+      <div id="log"></div>
       <form>
         <input name="chat" autocomplete="off" autofocus>
       </form>

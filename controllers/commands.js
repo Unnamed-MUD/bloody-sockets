@@ -55,7 +55,7 @@ Commands.prototype.all.look = function (player, command) {
       return Message.send(player, "Can't find any room... where are you???");
     }
 
-    Message.send(player, room.title);
+    Message.send(player, "{"+room.title+"}");
     Message.send(player, room.content);
 
     var exitList = "none";
