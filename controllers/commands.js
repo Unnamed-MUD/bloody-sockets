@@ -14,8 +14,6 @@ Commands.prototype.resolve = function (player, fullCommand) {
     // if we find the command just by first token in Commands.all
     if(this.all[command.tokens[0]]) {
         return this.all[command.tokens[0]](player, command);
-    } else {
-
     }
 
     // check if first token matches a room exit word

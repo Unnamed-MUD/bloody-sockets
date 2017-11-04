@@ -36,6 +36,15 @@ Rooms.prototype.getRecallRoomID = function (){
 // for a given cmd, eg "east", see if a room has that exit
 // if so, we pass back the linked room's ID, or false
 Rooms.prototype.findExitID = function(room,exitName) {
+
+	// if we have 1 letter exitname, match against shortucts
+	var shortcuts = {
+		e: "east", w: "west", s: "south", n:"north"
+	};
+	if(exitName.length == 1 && shortcuts[exitName]){
+		exitName = shortcuts[exitName];
+	}
+
 	for(var i = 0; i < room.exits.length; i++) {
 		if(room.exits[i].cmd == exitName){
 			return room.exits[i].room;
