@@ -131,7 +131,7 @@ Commands.prototype.all.who = function (player, command) {
     Message.send(player, current.length + " players currently logged in:");
     for(var i = 0; i< current.length; i++) {
         if(current[i].socket.id == player.socket.id) {
-            Message.send(player, " - " + current[i].name + " [YOU]");
+            Message.send(player, " - " + current[i].name + " (YOU)");
         } else {
             Message.send(player, " - " +  current[i].name);
         }

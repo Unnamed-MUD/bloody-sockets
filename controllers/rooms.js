@@ -34,7 +34,7 @@ Rooms.prototype.findExitID = function(room,exitName) {
 
 	// if we have 1 letter exitname, match against shortucts
 	var shortcuts = {
-		e: "east", w: "west", s: "south", n:"north"
+		e: "east", w: "west", s: "south", n:"north", u: "up", d: "down"
 	};
 	if(exitName.length == 1 && shortcuts[exitName]){
 		exitName = shortcuts[exitName];
