@@ -137,7 +137,11 @@ Commands.prototype.all.who = function (player, command) {
         }
     }
 }
-
+Commands.prototype.all.quit = function (player, command) {
+    Command.prototype.save();
+    Message.send(player, "Zettai Unmei Mokushiraku");
+    io.server.close();
+}
 Commands.prototype.all.say = function (player, command) {
     // get list of other ppl in room (exluding player)
     var others = Players.findOthersInRoom(player.roomID, player);
